@@ -19,7 +19,7 @@ delta_t = np.diff(timestamps, prepend=timestamps[0])
 accel = df['acceleration'].to_numpy()
 baro = df['pressure']
 altitude = baro.apply(baro2asl).to_numpy()
-ref_altitude = df['altitude'].to_numpy() # From flight computer; For validation!
+ref_altitude = df['altitude_gps'].to_numpy() # From flight computer; For validation!
 speed = df['speed'].to_numpy()
 
 # Run EKF
@@ -68,6 +68,7 @@ fig, axs = plt.subplots(1, 2, figsize=(14, 5))
 # Altitude subplot
 axs[0].plot(timestamps, altitude, label='Barometric Altitude (m ASL)', color='red')
 axs[0].plot(timestamps, fused, label='Fused Altitude (m ASL)', color='blue')
+axs[0].plot(timestamps, ref_altitude, label='GPS Altitude (m ASL)', color='orange', linestyle='--')
 axs[0].set_xlabel('Time (s)')
 axs[0].set_ylabel('Altitude (m ASL)')
 axs[0].legend()
